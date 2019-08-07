@@ -364,8 +364,9 @@ socket.on('subscribeToTimer', async (interval) => {
     console.log(newPostData, 'socket data');
     // console.log(req.body.date + 'T' + req.body.time);
     try {
+      
       newPostData.creatorID = socket.handshake.session.creatorID;
-      // newPostData.createdAt = time;
+      newPostData.createdAt = time;
       const createdChatPost = await CreatedChatPost.create(newPostData);
       console.log(createdChatPost);
     } catch(err) {
@@ -526,81 +527,137 @@ console.log(err);
 });
 
 
+// socket.on('handleChosen',  async (id) => {
+// console.log(id);
+// try {
+//   let chosen = await CreatedChatPost.findById(id);
+//   console.log(chosen);
+//   console.log(chosen.date + 'T' + chosen.time);
+//   let newDate1 = new Date(chosen.date + 'T' + chosen.time);
+//   // console.log(newDate, 'CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
+
+//   // let newDate = new Date('2018-03-03' + 'T' + '14:01');
+//   let bMonth1 = Number(newDate1.getUTCMonth()) + 1;
+
+
+//   // await console.log(newDate.getUTCMinutes(), newDate.getUTCHours(), newDate.getUTCDate(), (Number(newDate.getUTCMonth()) + 1).toString());
+//   let cronTime1 = (newDate1.getUTCMinutes() + ' ' + newDate1.getUTCHours() + ' ' +  newDate1.getUTCDate() + ' ' +  bMonth1.toString() + ' *');
+
+//   let cronDestroyTime1 = ((newDate1.getUTCMinutes() + 2 ) + ' ' + newDate1.getUTCHours() + ' ' +  newDate1.getUTCDate() + ' ' +  bMonth1.toString() + ' *');
+//   // console.log(cronDestroyTime, 'CRON DESTROY TIME')
+
+
+//   let newDate = chosen.newDate;
+//   let bMonth =  chosen.bMonth;
+//   let cronTime = chosen.cronTime;
+//   let cronDestroyTime = chosen.cronDestroyTime;
+
+//   console.log(bMonth, 'bMonth')
+//   console.log(bMonth1, 'bMonth1')
+//   console.log(newDate, 'newDate')
+//   console.log(newDate1, 'newDate1')
+//   console.log(cronTime, 'cronTime')
+//   console.log(cronTime1, 'cronTime1')
+//   console.log(cronDestroyTime, 'cronDestroyTime')
+//   console.log(cronDestroyTime1, 'cronDestroyTime1')
+
+
+//   let newChatSession = {
+//     creatorID: socket.handshake.session.creatorID,
+//     topic: chosen.topic,
+//     participantID: chosen.participantID,
+//     timeCreated: time,
+//     cronTimeScheduled: cronTime,
+//     cronDestroyTime: cronDestroyTime,
+//     duration: chosen.duration,
+//     relatedChatPost: chosen._id,
+//     timezone: 'UTC'
+//   };
+
+//   let newSesh = await ChatSession.create(newChatSession);
+
+//   let currentUserL = await User.findByIdAndUpdate(socket.handshake.session.creatorID);
+//   currentUserL.ownChats.push(newSesh._id);
+//   currentUserL.save();
+
+//   let guestUser = await User.findByIdAndUpdate(chosen.participantID);
+//   guestUser.foreignChats.push(newSesh._id);
+//   guestUser.save();
+
+//   console.log(guestUser, 'GUEST USER | GUEST USER');
+
+//   console.log('before schedule')
+
+//   // INVOKE CHATROOOM
+//   await invokeChat(newSesh._id, currentUserL);
+
+
+//    console.log(newSesh);
+
+
+
+//   // console.log(chosen, 'YESSSS')
+// } catch (err) {
+//   console.log(err);
+// }
+// });
 socket.on('handleChosen',  async (id) => {
-console.log(id);
-try {
-  let chosen = await CreatedChatPost.findById(id);
-  console.log(chosen);
-  console.log(chosen.date + 'T' + chosen.time);
-  let newDate1 = new Date(chosen.date + 'T' + chosen.time);
-  // console.log(newDate, 'CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!CRONTIME SCHEDULED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-
-
-  // let newDate = new Date('2018-03-03' + 'T' + '14:01');
-  let bMonth1 = Number(newDate1.getUTCMonth()) + 1;
-
-
-  // await console.log(newDate.getUTCMinutes(), newDate.getUTCHours(), newDate.getUTCDate(), (Number(newDate.getUTCMonth()) + 1).toString());
-  let cronTime1 = (newDate1.getUTCMinutes() + ' ' + newDate1.getUTCHours() + ' ' +  newDate1.getUTCDate() + ' ' +  bMonth1.toString() + ' *');
-
-  let cronDestroyTime1 = ((newDate1.getUTCMinutes() + 2 ) + ' ' + newDate1.getUTCHours() + ' ' +  newDate1.getUTCDate() + ' ' +  bMonth1.toString() + ' *');
-  // console.log(cronDestroyTime, 'CRON DESTROY TIME')
-
-
-  let newDate = chosen.newDate;
-  let bMonth =  chosen.bMonth;
-  let cronTime = chosen.cronTime;
-  let cronDestroyTime = chosen.cronDestroyTime;
-
-  console.log(bMonth, 'bMonth')
-  console.log(bMonth1, 'bMonth1')
-  console.log(newDate, 'newDate')
-  console.log(newDate1, 'newDate1')
-  console.log(cronTime, 'cronTime')
-  console.log(cronTime1, 'cronTime1')
-  console.log(cronDestroyTime, 'cronDestroyTime')
-  console.log(cronDestroyTime1, 'cronDestroyTime1')
-
-
-  let newChatSession = {
-    creatorID: socket.handshake.session.creatorID,
-    topic: chosen.topic,
-    participantID: chosen.participantID,
-    timeCreated: time,
-    cronTimeScheduled: cronTime,
-    cronDestroyTime: cronDestroyTime,
-    duration: chosen.duration,
-    relatedChatPost: chosen._id,
-    timezone: 'UTC'
-  };
-
-  let newSesh = await ChatSession.create(newChatSession);
-
-  let currentUserL = await User.findByIdAndUpdate(socket.handshake.session.creatorID);
-  currentUserL.ownChats.push(newSesh._id);
-  currentUserL.save();
-
-  let guestUser = await User.findByIdAndUpdate(chosen.participantID);
-  guestUser.foreignChats.push(newSesh._id);
-  guestUser.save();
-
-  console.log(guestUser, 'GUEST USER | GUEST USER');
-
-  console.log('before schedule')
-
-  // INVOKE CHATROOOM
-  await invokeChat(newSesh._id, currentUserL);
-
-
-   console.log(newSesh);
-
-
-
-  // console.log(chosen, 'YESSSS')
-} catch (err) {
-  console.log(err);
-}
-});
+  console.log(id);
+  try {
+    let chosen = await CreatedChatPost.findById(id);
+    console.log(chosen);
+    console.log(chosen.date + 'T' + chosen.time);
+    let newDate = new Date(chosen.date + 'T' + chosen.time);
+    // let newDate = new Date('2018-03-03' + 'T' + '14:01');
+    let bMonth = Number(newDate.getUTCMonth()) + 1;
+  
+  
+    await console.log(newDate.getUTCMinutes(), newDate.getUTCHours(), newDate.getUTCDate(), (Number(newDate.getUTCMonth()) + 1).toString());
+    let cronTime = (newDate.getUTCMinutes() + ' ' + newDate.getUTCHours() + ' ' +  newDate.getUTCDate() + ' ' +  bMonth.toString() + ' *');
+  
+    let cronDestroyTime = ((newDate.getUTCMinutes() + 2 ) + ' ' + newDate.getUTCHours() + ' ' +  newDate.getUTCDate() + ' ' +  bMonth.toString() + ' *');
+    console.log(cronDestroyTime, 'CRON DESTROY TIME')
+  
+    let newChatSession = {
+      creatorID: socket.handshake.session.creatorID,
+      topic: chosen.topic,
+      participantID: chosen.participantID,
+      timeCreated: time.toLocaleTimeString(),
+      cronTimeScheduled: cronTime,
+      cronDestroyTime: cronDestroyTime,
+      duration: chosen.duration,
+      relatedChatPost: chosen._id,
+      timezone: 'UTC'
+    };
+  
+    let newSesh = await ChatSession.create(newChatSession);
+  
+    let currentUserL = await User.findByIdAndUpdate(socket.handshake.session.creatorID);
+    currentUserL.ownChats.push(newSesh._id);
+    currentUserL.save();
+  
+    let guestUser = await User.findById(chosen.participantID);
+    guestUser.foreignChats.push(newSesh._id);
+    guestUser.save();
+  
+    console.log(guestUser, 'GUEST USER | GUEST USER');
+  
+    console.log('before schedule')
+  
+    // INVOKE CHATROOOM
+    invokeChat(newSesh._id, currentUserL);
+  
+  
+     console.log(newSesh);
+  
+  
+  
+    // console.log(chosen, 'YESSSS')
+  } catch (err) {
+    console.log(err);
+  }
+  });
 
 
   socket.on('disconnect', function(){
