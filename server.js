@@ -193,21 +193,35 @@ function sendTo(to, done, fail) {
 //   })
 // // DELETE DATABASE | DELETE DATABASE | DELETE DATABASE
   
-socket.on('localTime', async (clock) => {
-  time = clock.time;
-  utcTime = clock.utcTime;
-})
+// socket.on('localTime', async (clock) => {
+//   time = clock.time;
+//   utcTime = clock.utcTime;
+// })
 
-  socket.on('subscribeToTimer', async (interval) => {
-    await console.log('client is subscribing to timer with interval ', interval);
-    await setInterval( async () => {
-      // socket.emit(time, 'time')
-       await returnTime();
-        await console.log(time)
-      await socket.emit('timer', time);
-    }, interval);
-  });
+//   socket.on('subscribeToTimer', async (interval) => {
+//     await console.log('client is subscribing to timer with interval ', interval);
+//     await setInterval( async () => {
+//       // socket.emit(time, 'time')
+//        await returnTime();
+//         await console.log(time)
+//       await socket.emit('timer', time);
+//     }, interval);
+//   });
       
+socket.on('subscribeToTimer', async (interval) => {
+  await console.log('client is subscribing to timer with interval ', interval);
+  await setInterval( async () => {
+      time = new Date();
+      await console.log(time.toLocaleTimeString());
+      // document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+      // console.log(time.getHours() + ':' + time.getMinutes());
+      await console.log(time.getUTCHours() + ':' + time.getUTCMinutes());
+      utcTime = time.getUTCHours() + ':' + time.getUTCMinutes();
+      // await console.log(typeof(utcTime), utcTime)
+
+    await socket.emit('timer', time);
+  }, interval);
+});
 
   const returnTime = () => {
   
